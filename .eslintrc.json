@@ -25,6 +25,8 @@
       }
     ],
     "func-names": "off",
-    "no-return-await": "off"
+    "no-return-await": "off",
+    "prefer-destructuring": "off",
+    "no-param-reassign": "off"
   }
 }
