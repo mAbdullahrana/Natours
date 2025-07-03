@@ -20,6 +20,18 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   const token = signToken(newUser._id);
 
+  // creating a cookie
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true
+  };
+
+  res.cookie('jwt', token, cookieOptions);
+
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
   res.status(201).json({
     status: 'success',
     token,
@@ -188,8 +200,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
   const user = await User.findById(req.user.id).select('+password');
-
-
 
   // 2) Check if the posted password is correct
   if (!(await user.correctPassword(req.body.currentPassword, user.password)))
