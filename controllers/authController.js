@@ -104,6 +104,8 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // Grant Access to protected routes
 
+  // req.user is used in the next middleware
+  // so that we can access the user data in the next middleware
   req.user = currentUser;
 
   next();
